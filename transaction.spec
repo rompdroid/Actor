@@ -79,7 +79,7 @@
             }
 
         model -owns- {
-            level : int32,
+            state : int32,
             space : Ref(RSpace),
             index : ShadowIndex,
             auto_buffer : Bool,
@@ -89,7 +89,7 @@
                 -parameter- (space:RSpace,
                              buffer:Buffer):Transaction
                 -process- begin
-                    self.level << 0;
+                    self.state << state_commit;
                     self.space << space;
                     self.index.construct(buffer);
                     self.auto_buffer << false;
@@ -99,7 +99,7 @@
                 -parameter- (space:RSpace,
                              alloc:Allocator):Transaction
                 -process- begin
-                    self.level << 0;
+                    self.state << state_commit;
                     self.space << space;
                     let buffer = alloc.allocate(sizeof(Buffer)).asType(Buffer) in
                         buffer.construct(def_buffer_size,alloc);
